@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>Weekly Market Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,500&family=Caveat:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fbf8f1; --rule:#dfe7ef; --margin:#efc9c2; --ink:#1f2a24; --soft:#55625a; --faint:#8a958e;
+  --green:#2f6f4f; --green-hl:#d6ead9; --green-bg:#eef6ef;
+  --amber:#a8661f; --amber-hl:#f7e3b5; --amber-bg:#fcf3e1;
+  --red:#a2483a; --red-bg:#f8e9e4; --blue:#355f86; --blue-bg:#e9f0f7;
+  --line:#2b3a32;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#e9e5dc}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{width:1080px;height:1620px;position:relative;overflow:hidden;background:var(--paper);
+  background-image:linear-gradient(transparent 31px,var(--rule) 32px);background-size:100% 32px;background-position:0 8px;
+  padding:54px 52px 92px 112px;display:none}
+.page.on{display:flex;flex-direction:column}
+.page.on>.sec{margin-top:auto;padding-top:20px}
+.page.on{display:flex}
+/* margin line + spiral */
+.page:before{content:"";position:absolute;left:92px;top:0;bottom:0;border-left:1.5px solid var(--margin)}
+.spiral{position:absolute;left:18px;top:30px;bottom:30px;width:56px;display:flex;flex-direction:column;justify-content:space-between}
+.spiral i{display:block;height:22px;position:relative}
+.spiral i:before{content:"";position:absolute;left:30px;top:6px;width:13px;height:13px;border-radius:50%;background:#d9d4c8;box-shadow:inset 1px 1px 2px rgba(0,0,0,.25)}
+.spiral i:after{content:"";position:absolute;left:4px;top:4px;width:40px;height:14px;border:2.5px solid #9aa0a6;border-right:none;border-radius:10px 0 0 10px;background:linear-gradient(90deg,rgba(255,255,255,.5),transparent)}
+/* header */
+.head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.kicker{font:600 13px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.pg{font:700 22px Caveat;color:var(--soft);border:1.5px solid var(--soft);padding:0 12px;border-radius:14px 4px 14px 4px;transform:rotate(2deg)}
+h1{font:700 52px/1.05 Fraunces,serif;letter-spacing:-.01em;margin:6px 0 4px}
+h1 .hl{background:linear-gradient(104deg,transparent 1%,var(--green-hl) 3%,var(--green-hl) 96%,transparent 99%);padding:0 10px;border-radius:6px;box-decoration-break:clone}
+.dates{font:600 17px Inter;color:var(--soft);margin-bottom:6px}
+.sub{font:700 30px Caveat;color:var(--green);margin:2px 0 18px}
+/* sections */
+.sec{margin-top:22px}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.num{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font:700 20px Fraunces;flex:none;background:var(--paper)}
+.sh h2{font:700 24px Fraunces,serif;letter-spacing:.005em;padding:2px 10px;background:linear-gradient(100deg,transparent 0,var(--amber-hl) 2%,var(--amber-hl) 97%,transparent 100%);border-radius:4px}
+.sh h2.g{background:linear-gradient(100deg,transparent 0,var(--green-hl) 2%,var(--green-hl) 97%,transparent 100%)}
+.card{background:rgba(255,255,255,.72);border:1.6px solid var(--line);border-radius:14px 10px 16px 9px / 10px 14px 9px 16px;padding:16px 18px}
+.card.g{background:var(--green-bg)}.card.a{background:var(--amber-bg)}.card.r{background:var(--red-bg)}.card.b{background:var(--blue-bg)}
+p{font-size:17px;line-height:1.5}
+.hand{font-family:Caveat;font-weight:700;font-size:26px;line-height:1.15;color:var(--green)}
+.hand.a{color:var(--amber)}.hand.r{color:var(--red)}
+.up{color:var(--green)}.dn{color:var(--red)}
+b{font-weight:700}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+/* stat tiles */
+.stat{padding:12px 12px 10px;text-align:center}
+.stat .l{font:600 13px Inter;color:var(--soft);text-transform:uppercase;letter-spacing:.06em}
+.stat .v{font:700 30px Fraunces;margin:4px 0 0;font-variant-numeric:tabular-nums}
+.stat .c{font:700 19px Inter;font-variant-numeric:tabular-nums}
+.stat .n{font:600 20px Caveat;color:var(--soft);margin-top:2px}
+/* table */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:15.5px;line-height:1.38}
+th{font:700 14px Inter;text-transform:uppercase;letter-spacing:.05em;color:var(--soft);text-align:left;padding:10px 12px;border-bottom:1.6px solid var(--line);background:rgba(255,255,255,.6)}
+td{padding:11px 12px;border-bottom:1px dashed #c9cfc9;vertical-align:top;background:rgba(255,255,255,.55)}
+tr:last-child td{border-bottom:none}
+td.sect{font:700 18px Fraunces;white-space:nowrap}
+td.chg{font:700 19px Inter;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tbl{border:1.6px solid var(--line);border-radius:14px 10px 16px 9px / 10px 14px 9px 16px;overflow:hidden}
+ul.dots{list-style:none}ul.dots li{position:relative;padding-left:20px;font-size:16.5px;line-height:1.45;margin:5px 0}
+ul.dots li:before{content:"";position:absolute;left:3px;top:10px;width:7px;height:7px;border-radius:50%;background:var(--green)}
+.icon{width:46px;height:46px;flex:none}
+.row{display:flex;gap:14px;align-items:flex-start}
+.big{font:700 34px Fraunces;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font:700 12px Inter;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;border:1.4px solid currentColor}
+.take{border:2px solid var(--line);border-radius:18px 12px 20px 10px/12px 18px 10px 20px;background:var(--green-bg);padding:18px 22px;display:flex;gap:18px;align-items:center}
+.take .k{font:700 24px Fraunces;white-space:nowrap}
+.take p{font-size:19px;font-weight:600}
+.src{position:absolute;left:112px;right:52px;bottom:26px;font-size:13px;color:var(--faint);line-height:1.4}
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .step{flex:1;text-align:center;padding:12px 10px;font-size:15.5px;line-height:1.35;font-weight:600}
+.flow .arr{display:grid;place-items:center;width:34px;font:700 28px Caveat;color:var(--soft)}
+svg{font-family:Inter}
+.note-hand{position:absolute;font:700 25px Caveat;color:var(--amber);transform:rotate(-4deg)}
+
+.datebadge{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin:8px 0 6px;padding:6px 18px 6px 12px;border:1.4px solid var(--green);border-radius:999px;background:rgba(255,255,255,.75)}
+.datebadge .k{font:600 12.5px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.datebadge .d{font:600 18px Fraunces,serif;color:var(--ink);letter-spacing:.01em}
+.datebadge .sep{width:1px;height:18px;background:var(--green);opacity:.4}
+
+.page{height:1350px;padding:44px 52px 74px 112px}
+.page.on>.sec{padding-top:14px}
+h1{font-size:44px}
+.sub{margin:2px 0 6px;font-size:27px}
+.src{bottom:20px;font-size:12px}
+.hero{text-align:center;padding:10px 0 4px}
+.hero .n{font:700 150px/1 Fraunces,serif;letter-spacing:-.03em;color:var(--green)}
+.hero .l{font:700 34px/1.15 Caveat;color:var(--soft);margin-top:4px}
+.heroS .n{font-size:104px}
+.heroS .l{font-size:29px}
+.note{font:700 37px/56px Caveat;color:#23362c}
+.note p{font:inherit;line-height:inherit;margin:0 0 28px}
+.sign{font:700 44px Caveat;color:var(--green);text-align:right}
+.mini{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.mini td{padding:7px 10px;font-size:16px;background:none;border-bottom:1px dashed #c9cfc9}
+.mini tr:last-child td{border-bottom:none}
+.mini td.r{text-align:right;font-weight:700}
+
+/* normal upright font everywhere, no italics or handwriting */
+.hand{font-family:Inter,sans-serif!important;font-style:normal;font-weight:700!important;font-size:19px!important;line-height:1.3!important}
+.hero .l{font:600 25px/1.35 Inter,sans-serif;color:var(--soft)}
+.note{font:400 26px/56px Inter,sans-serif;color:#1f2a24}
+.note p{margin:0 0 28px}
+.sign{font:600 26px Inter,sans-serif;color:var(--green);text-align:right}
+</style>
+</head>
+<body>
+<section class="page on" id="p1">
+  <div class="spiral"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="head"><div class="kicker">Daily market note</div></div>
+  <h1><span class="hl">Indian Markets Today</span></h1>
+  <div class="datebadge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2f6f4f" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="k">Thursday</span><span class="sep"></span><span class="d">5 November 2026</span></div>
+  <div class="sec"><div class="grid" style="grid-template-columns:1fr 1.25fr;gap:14px;align-items:center">
+    <div class="hero heroS"><div class="n">+8.1%</div></div>
+    <div class="hand" style="color:var(--soft);font-size:25px!important;font-weight:600!important">what the Nifty has gained in six straight days, including 2.4% today alone</div>
+  </div></div>
+  <div class="sec"><div class="grid g5">
+      <div class="card stat"><div class="l">Nifty 50</div><div class="v">24,537</div><div class="c up">+2.40%</div></div>
+      <div class="card stat"><div class="l">Bank Nifty</div><div class="v">57,774</div><div class="c up">+3.33%</div></div>
+      <div class="card stat"><div class="l">Smallcap 250</div><div class="v">17,524</div><div class="c up">+0.72%</div></div>
+      <div class="card stat"><div class="l">Microcap 250</div><div class="v">25,111</div><div class="c up">+1.10%</div></div>
+      <div class="card stat"><div class="l">India VIX</div><div class="v">15.53</div><div class="c dn">+2.2%</div></div>
+  </div></div>
+  <div class="sec"><div class="sh"><div class="num">1</div><h2>Sectors today</h2></div><div class="card" style="padding:10px 16px"><svg viewBox="0 0 860 300" width="100%" class="secs"></svg></div></div>
+  <div class="sec"><div class="grid g2">
+    <div class="card"><div class="hand">Why it moved</div><p style="font-size:16px">Brent fell below $95 after Democrats won the US midterms, raising hopes of less conflict with Iran. Foreign investors have also bought about ₹17,000 crore in November.</p></div>
+    <div class="card a"><div class="hand a">Watch tomorrow</div><p style="font-size:16px">Whether oil stays below $95, and how the market reads today's results, including M&amp;M's 25% profit rise.</p></div>
+  </div></div>
+  <div class="sec"><div class="take" style="background:var(--green-bg);padding:12px 20px"><div class="k">My read</div><p style="font-size:18px">Six green days with oil under $95 is a real change in mood. I'd still like smaller companies to keep up.</p></div></div>
+  <div class="src">Index data from Zerodha Kite (NSE), as of 3:37 PM IST on 5 November 2026. News: Times of India, PTI, Economic Times. For education only, not investment advice.</div>
+</section>
+<script>
+const secs=[['Auto',4.14],['Realty',3.55],['Banks',3.33],['PSU Banks',3.12],['IT',2.42],['Pharma',1.01],['Metal',0.86],['FMCG',0.45]];
+document.querySelectorAll('.secs').forEach(s=>{const mid=130,sc=130,rh=36;let g=`<line x1="${mid}" x2="${mid}" y1="4" y2="${secs.length*rh+4}" stroke="#2b3a32" stroke-width="1.5"/>`;
+ const lo=Math.min(...secs.map(x=>x[1]));
+ secs.forEach(([n,v],i)=>{const yy=6+i*rh,w=Math.abs(v)*sc,pos=v>=0;
+  g+=`<text x="10" y="${yy+21}" font-size="18" font-weight="600" fill="#1f2a24">${n}</text>`;
+  g+=`<rect x="${pos?mid:mid-w}" y="${yy+3}" width="${w}" height="25" rx="5" fill="${pos?'#cfe5d3':'#f3d9d2'}" stroke="${pos?'#2f6f4f':'#a2483a'}" stroke-width="1.5"/>`;
+  g+=`<text x="${pos?mid+w+8:mid+8}" y="${yy+21}" font-size="17" font-weight="700" fill="${pos?'#2f6f4f':'#a2483a'}">${(pos?'+':'\u2212')+Math.abs(v).toFixed(2)}%</text>`;});
+ s.innerHTML=g});
+</script>
+</body>
+</html>
