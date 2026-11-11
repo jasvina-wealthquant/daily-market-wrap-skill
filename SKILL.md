@@ -9,10 +9,11 @@ Output: `~/market-wraps/daily/<date>.html` and `<date>.png` (1080x1350 at 2x), t
 
 ## 1. Data from Kite
 
-1. Test the session with `mcp__kite__get_ltp` on `NSE:NIFTY 50`. "Invalid session ID" means the user must reconnect (`/mcp` → kite → Reconnect, or Developer: Reload Window). A login error means call `mcp__kite__login`, show the warning and link, and wait for "done".
-2. Call `mcp__kite__get_historical_data` (`interval: day`, previous trading day to today 23:59:59) in parallel:
+1. Check the session with `mcp__kite__session` (`mode: status`). Kite's MCP now signs in through Claude Code itself. If it says the server needs re-authentication, the user runs `/mcp`, picks kite and chooses Authenticate, then says "done". (Older Kite servers used `mcp__kite__login` with a link instead, so use that if it exists.)
+2. Call `mcp__kite__market` with `mode: historical`, `interval: day`, previous trading day to today, for each `instrument_token`, in parallel:
    - Scorecard: Nifty 50 `256265`, Nifty Bank `260105`, Nifty Smallcap 250 `267273`, Nifty Microcap 250 `290569`, India VIX `264969`
    - Sectors: IT `259849`, Auto `263433`, Pharma `262409`, FMCG `261897`, Metal `263689`, Realty `261129`, PSU Bank `262921`, plus Nifty Bank as "Banks"
+   - Use `mode: ltp` with `instruments: ["NSE:NIFTY 50"]` for a quick live check.
 3. Pull about 15 sessions of Nifty closes to count streaks and find the Number of the Day. Compute every percentage with a script, never by eye.
 4. Before about 4 PM, closes can still shift slightly, so state the time in the source line ("as of 3:37 PM IST"). During market hours, label the page as intraday.
 
